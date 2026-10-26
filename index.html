@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MARS IT School - Magazin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { mars: "#11165C", orange: "#BC5B37" } } }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; }
+    .product { min-height: 245px; transition: .2s; }
+    .product:hover { transform: translateY(-4px); }
+    .product img { width: 125px; height: 90px; object-fit: contain; }
+
+    /* ===== O'YIN ===== */
+    #board {
+      position: relative; width: 100%; max-width: 420px; aspect-ratio: 1/1;
+      margin: 0 auto; background: #e9e4dc; border-radius: 16px;
+      border: 6px solid #11165C; touch-action: none; user-select: none;
+      background-image:
+        linear-gradient(#cfc8bb 1px, transparent 1px),
+        linear-gradient(90deg, #cfc8bb 1px, transparent 1px);
+      background-size: calc(100%/6) calc(100%/6);
+    }
+    .car {
+      position: absolute; border-radius: 10px; cursor: grab;
+      box-shadow: 0 3px 6px rgba(0,0,0,.35); border: 3px solid rgba(255,255,255,.5);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.85); font-size: 20px; transition: left .12s, top .12s;
+    }
+    .car.drag { transition: none; cursor: grabbing; z-index: 5; }
+    .exit {
+      position: absolute; right: -32px; font-size: 26px; color: #BC5B37;
+      font-weight: bold; transform: translateY(-50%);
+    }
+  </style>
+</head>
+
+<body class="text-gray-800">
+
+  <!-- HEADER -->
+  <header class="bg-white shadow-md">
+    <nav class="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-5 px-6 py-5 lg:px-12">
+      <a href="#" class="text-3xl font-black text-mars">
+        MARS<span class="text-orange">°</span>
+        <span class="block text-[9px]">IT School</span>
+      </a>
+
+      <div class="flex flex-wrap items-center gap-5 font-semibold sm:gap-8">
+        <a href="#" class="text-gray-400">⌂ Home</a>
+        <a href="#" class="text-gray-400">▤ Learning</a>
+        <a href="#shop" class="text-gray-400 hover:text-orange">▣ Shop</a>
+        <a href="#game" class="border-b-2 border-orange pb-2 text-orange">🎮 O'yin</a>
+      </div>
+
+      <button class="rounded-2xl border-2 border-orange px-5 py-3 font-bold text-orange hover:bg-orange hover:text-white">
+        + Post yaratish
+      </button>
+
+      <span class="hidden text-4xl text-yellow-600 sm:block">⬡</span>
+    </nav>
+  </header>
+
+  <!-- SHOP -->
+  <main id="shop" class="mx-auto max-w-[1440px] px-5 py-10 lg:px-12">
+
+    <section class="mb-20 flex flex-col items-center justify-between gap-6 lg:flex-row">
+      <h1 class="whitespace-nowrap text-3xl font-bold text-mars">🛒 Magazin</h1>
+
+      <form id="searchForm" class="flex w-full max-w-xl gap-4">
+        <input id="search" type="text" placeholder="search...."
+          class="min-w-0 flex-1 rounded-2xl bg-black px-5 py-4 text-white outline-none placeholder:text-gray-400">
+        <button class="rounded-2xl bg-mars px-7 py-3 text-white hover:bg-orange" type="submit">click</button>
+      </form>
+
+      <button id="history" class="whitespace-nowrap text-xl font-bold text-orange">◷ Xaridlar tarixi</button>
+    </section>
+
+    <section id="products" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./Mars rug.png" alt="Mars rug">
+        <h2 class="mt-4 text-sm font-semibold">Mars rug</h2>
+        <p class="mt-3">🪙 100 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">24 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./keyboard sticker.png" alt="Keyboard sticker">
+        <h2 class="mt-4 text-sm font-semibold">Keyboard sticker</h2>
+        <p class="mt-3">🪙 49 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">11 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./smart watch.png" alt="Smart watch">
+        <h2 class="mt-4 text-sm font-semibold">Smart watch</h2>
+        <p class="mt-3">🪙 899 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">4 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./klavish.png" alt="Wireless keyboard">
+        <h2 class="mt-4 text-sm font-semibold">Wireless keyboard</h2>
+        <p class="mt-3">🪙 350 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">0 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./mishka.png" alt="Mouse">
+        <h2 class="mt-4 text-sm font-semibold">Mouse</h2>
+        <p class="mt-3">🪙 359 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">24 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./airpods.png" alt="AirPods">
+        <h2 class="mt-4 text-sm font-semibold">AirPods</h2>
+        <p class="mt-3">🪙 499 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">11 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./powerbank.png" alt="Powerbank">
+        <h2 class="mt-4 text-sm font-semibold">Powerbank</h2>
+        <p class="mt-3">🪙 899 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">5 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./usb.png" alt="USB flash drive">
+        <h2 class="mt-4 text-sm font-semibold">USB flash drive</h2>
+        <p class="mt-3">🪙 299 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">21 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./smartphone.png" alt="Smartphone">
+        <h2 class="mt-4 text-sm font-semibold">Smartphone</h2>
+        <p class="mt-3">🪙 3699 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">2 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./playstation 5.png" alt="Playstation 5">
+        <h2 class="mt-4 text-sm font-semibold">Playstation 5</h2>
+        <p class="mt-3">🪙 7449 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">Ushbu tovarga oldindan buyurtma berish mumkin</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./Yandex station.png" alt="Yandex Station">
+        <h2 class="mt-4 text-sm font-semibold">Yandex Station</h2>
+        <p class="mt-3">🪙 1999 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">4 dona mavjud</p>
+      </article>
+
+      <article class="product flex flex-col items-center rounded-[28px] bg-white px-4 py-6 text-center shadow-lg">
+        <img src="./planshet.png" alt="Planshet Samsung">
+        <h2 class="mt-4 text-sm font-semibold">Planshet Samsung</h2>
+        <p class="mt-3">🪙 4999 Coins</p>
+        <p class="mt-6 text-xs text-gray-400">24 dona mavjud</p>
+      </article>
+
+    </section>
+
+    <p id="empty" class="hidden py-12 text-center text-gray-500">Mahsulot topilmadi.</p>
+  </main>
+
+  <!-- GAME -->
+  <section id="game" class="mx-auto max-w-[1440px] px-5 pb-10 lg:px-12">
+    <div class="rounded-[28px] bg-white p-6 shadow-lg">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 class="text-3xl font-bold text-mars">🚗 Moshinani chiqar</h2>
+        <div class="flex flex-wrap gap-3 font-bold">
+          <span class="rounded-xl bg-gray-100 px-4 py-2">Level: <span id="lvl">1</span>/4</span>
+          <span class="rounded-xl bg-gray-100 px-4 py-2">Yurish: <span id="moves">0</span></span>
+          <span class="rounded-xl bg-orange px-4 py-2 text-white">🪙 <span id="coins">0</span></span>
+        </div>
+      </div>
+      <p class="mb-6 text-gray-500">
+        🔴 Qizil moshinani o'ngdagi chiqishga (➜) olib chiq. Moshinalarni sudrab sur —
+        ular faqat oldinga/orqaga yuradi. Level yechsang coin olasan!
+      </p>
+
+      <div class="px-6 sm:px-10"><div id="board"><span class="exit" style="top:calc(100%/6*2.5)">➜</span></div></div>
+
+      <p id="msg" class="mt-6 h-8 text-center text-xl font-bold text-green-600"></p>
+
+      <div class="mt-2 flex flex-wrap justify-center gap-3">
+        <button id="reset" class="rounded-2xl border-2 border-mars px-6 py-3 font-bold text-mars hover:bg-mars hover:text-white">↺ Qayta boshlash</button>
+        <button id="next" class="hidden rounded-2xl bg-orange px-6 py-3 font-bold text-white hover:bg-mars">Keyingi level ➜</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="mt-10 border-t bg-white px-6 py-6">
+    <div class="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-4 sm:flex-row">
+      <p class="text-sm text-gray-500">MARS IT School 2022</p>
+      <h2 class="text-2xl font-black text-mars">MARS<span class="text-orange">°</span></h2>
+      <a href="#" class="text-sm text-gray-500 underline">Политика конфиденциальности</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ===== QIDIRUV ===== */
+    document.getElementById('searchForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var q = document.getElementById('search').value.toLowerCase().trim();
+      var shown = 0;
+      document.querySelectorAll('#products .product').forEach(function (p) {
+        var ok = p.querySelector('h2').textContent.toLowerCase().indexOf(q) !== -1;
+        p.style.display = ok ? '' : 'none';
+        if (ok) shown++;
+      });
+      document.getElementById('empty').classList.toggle('hidden', shown > 0);
+    });
+
+    /* ===== O'YIN: Moshinani chiqar (Rush Hour) ===== */
+    // x,y = chap-yuqori katak; len = uzunlik; dir: 'h' gorizontal, 'v' vertikal
+    var LEVELS = [
+      [ {id:'R',x:0,y:2,len:2,dir:'h',c:'#e11d48'},
+        {id:'A',x:3,y:1,len:2,dir:'v',c:'#2563eb'},
+        {id:'B',x:5,y:2,len:3,dir:'v',c:'#16a34a'} ],
+
+      [ {id:'R',x:0,y:2,len:2,dir:'h',c:'#e11d48'},
+        {id:'A',x:2,y:1,len:2,dir:'v',c:'#2563eb'},
+        {id:'B',x:4,y:2,len:3,dir:'v',c:'#16a34a'},
+        {id:'C',x:0,y:4,len:2,dir:'h',c:'#7c3aed'},
+        {id:'D',x:5,y:0,len:2,dir:'v',c:'#0891b2'},
+        {id:'E',x:3,y:5,len:2,dir:'h',c:'#ca8a04'} ],
+
+      [ {id:'R',x:0,y:2,len:2,dir:'h',c:'#e11d48'},
+        {id:'A',x:2,y:0,len:3,dir:'v',c:'#2563eb'},
+        {id:'F',x:1,y:3,len:2,dir:'h',c:'#ca8a04'},
+        {id:'B',x:4,y:1,len:3,dir:'v',c:'#16a34a'},
+        {id:'H',x:5,y:2,len:2,dir:'v',c:'#7c3aed'} ],
+
+      [ {id:'R',x:0,y:2,len:2,dir:'h',c:'#e11d48'},
+        {id:'A',x:2,y:0,len:3,dir:'v',c:'#2563eb'},
+        {id:'F',x:1,y:3,len:2,dir:'h',c:'#ca8a04'},
+        {id:'B',x:4,y:1,len:3,dir:'v',c:'#16a34a'},
+        {id:'H',x:5,y:2,len:2,dir:'v',c:'#7c3aed'},
+        {id:'K',x:0,y:0,len:2,dir:'h',c:'#0891b2'},
+        {id:'M',x:0,y:5,len:3,dir:'h',c:'#ea580c'} ]
+    ];
+    // 4-level: K va M faqat qo'shimcha moshinalar (qiyinroq ko'rinish uchun)
+
+    var board = document.getElementById('board');
+    var level = 0, cars = [], moves = 0, coins = 0, won = false, cell = 0;
+    var el = function (id) { return document.getElementById(id); };
+
+    function setup(n) {
+      level = n; won = false; moves = 0;
+      cars = LEVELS[n].map(function (c) { return Object.assign({}, c); });
+      board.querySelectorAll('.car').forEach(function (e) { e.remove(); });
+      cars.forEach(function (c) {
+        var d = document.createElement('div');
+        d.className = 'car'; d.style.background = c.c;
+        d.textContent = c.id === 'R' ? '🚗' : '';
+        c.el = d; board.appendChild(d);
+        bind(c);
+      });
+      el('lvl').textContent = n + 1; el('moves').textContent = 0;
+      el('msg').textContent = ''; el('next').classList.add('hidden');
+      layout();
+    }
+
+    function layout() {
+      cell = board.clientWidth / 6;
+      cars.forEach(function (c) { place(c, c.dir === 'h' ? c.x : c.y); });
+    }
+
+    function place(c, pos) {
+      var w = c.dir === 'h' ? c.len : 1, h = c.dir === 'v' ? c.len : 1;
+      var x = c.dir === 'h' ? pos : c.x, y = c.dir === 'v' ? pos : c.y;
+      var s = c.el.style;
+      s.width = (w * cell - 4) + 'px'; s.height = (h * cell - 4) + 'px';
+      s.left = (x * cell + 2) + 'px'; s.top = (y * cell + 2) + 'px';
+    }
+
+    function occupied(x, y, skip) {
+      return cars.some(function (c) {
+        if (c === skip) return false;
+        for (var i = 0; i < c.len; i++) {
+          var cx = c.dir === 'h' ? c.x + i : c.x, cy = c.dir === 'v' ? c.y + i : c.y;
+          if (cx === x && cy === y) return true;
+        }
+        return false;
+      });
+    }
+
+    function range(c) {           // moshina bora oladigan eng kichik va eng katta pozitsiya
+      var h = c.dir === 'h', pos = h ? c.x : c.y, lo = pos, hi = pos;
+      function free(p) {
+        for (var i = 0; i < c.len; i++) {
+          var x = h ? p + i : c.x, y = h ? c.y : p + i;
+          if (x < 0 || y < 0 || x > 5 || y > 5 || occupied(x, y, c)) return false;
+        }
+        return true;
+      }
+      while (free(lo - 1)) lo--;
+      while (free(hi + 1)) hi++;
+      return [lo, hi];
+    }
+
+    function bind(c) {
+      var start, startPos, r, h = c.dir === 'h';
+      c.el.addEventListener('pointerdown', function (e) {
+        if (won) return;
+        e.preventDefault();
+        c.el.setPointerCapture(e.pointerId);
+        c.el.classList.add('drag');
+        start = h ? e.clientX : e.clientY; startPos = h ? c.x : c.y; r = range(c);
+        c.el.onpointermove = function (ev) {
+          var d = ((h ? ev.clientX : ev.clientY) - start) / cell;
+          place(c, Math.max(r[0], Math.min(r[1], startPos + d)));
+        };
+        c.el.onpointerup = c.el.onpointercancel = function (ev) {
+          c.el.onpointermove = c.el.onpointerup = c.el.onpointercancel = null;
+          c.el.classList.remove('drag');
+          var d = ((h ? ev.clientX : ev.clientY) - start) / cell;
+          var np = Math.round(Math.max(r[0], Math.min(r[1], startPos + d)));
+          if (h) c.x = np; else c.y = np;
+          place(c, np);
+          if (np !== startPos) { moves++; el('moves').textContent = moves; checkWin(); }
+        };
+      });
+    }
+
+    function checkWin() {
+      var red = cars[0];
+      if (red.x + red.len < 6) return;
+      won = true;
+      var reward = Math.max(10, 60 - moves) + level * 10;
+      coins += reward; el('coins').textContent = coins;
+      red.x = 6; place(red, 6);                       // chiqib ketadi
+      el('msg').textContent = '🎉 Zo\'r! ' + moves + ' yurishda yechding. +' + reward + ' coin';
+      if (level < LEVELS.length - 1) el('next').classList.remove('hidden');
+      else el('msg').textContent += ' — Barcha levellar tugadi! 🏆';
+    }
+
+    el('reset').onclick = function () { setup(level); };
+    el('next').onclick = function () { setup(level + 1); };
+    window.addEventListener('resize', layout);
+    setup(0);
+  </script>
+</body>
+</html>
